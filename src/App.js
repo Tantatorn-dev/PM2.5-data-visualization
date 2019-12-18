@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import '../node_modules/react-vis/dist/style.css';
 import { XYPlot,VerticalBarSeries,MarkSeries, LineSeries } from "react-vis";
+import getData from "./lib/data";
 
 function App() {
   const data = [
@@ -16,6 +17,11 @@ function App() {
     { x: 8, y: 2 },
     { x: 9, y: 0 }
   ];
+
+  useEffect(()=>{
+    getData()
+  }
+  );
 
   return (
     <div className="App">
