@@ -1,38 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import '../node_modules/react-vis/dist/style.css';
-import { XYPlot,VerticalBarSeries,MarkSeries, LineSeries } from "react-vis";
-import getData from "./lib/data";
+import { XYPlot, LineSeries } from "react-vis";
+import extractData from "./lib/data";
 
 function App() {
-  const data = [
-    { x: 0, y: 8 },
-    { x: 1, y: 5 },
-    { x: 2, y: 4 },
-    { x: 3, y: 9 },
-    { x: 4, y: 1 },
-    { x: 5, y: 7 },
-    { x: 6, y: 6 },
-    { x: 7, y: 3 },
-    { x: 8, y: 2 },
-    { x: 9, y: 0 }
-  ];
+  const [data, setData] = useState([])
 
-  useEffect(()=>{
-    getData()
+  useEffect(() => {
+    setInterval(
+    fetch("https://tgr2020-quiz.firebaseio.com/quiz/sensor/team32.json")
+      .then(res => res.json())
+      .then(res => {
+        let [xData,yData] = extractData(res)
+        let temp = []
+        xData.map(i=>{
+          console.log({x:xData[i],y:yData[i]})
+          temp.push({x:xData[i],y:yData[i]})
+        })
+        setData(temp)
+      })
+      .catch(() => { console.log("error fetching data") }),5000)
   }
   );
 
   return (
     <div className="App">
-      <XYPlot height={200} width={200}>
-        <VerticalBarSeries data={data} />
-      </XYPlot>
-      <XYPlot height={200} width={200}>
+      <XYPlot height={500} width={500}>
         <LineSeries data={data} />
-      </XYPlot>
-      <XYPlot height={200} width={200}>
-        <MarkSeries data={data} />
       </XYPlot>
     </div>
   );
