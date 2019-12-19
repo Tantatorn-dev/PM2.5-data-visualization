@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import '../node_modules/react-vis/dist/style.css';
-import { XYPlot, LineSeries } from "react-vis";
+import { XYPlot, LineSeries, XAxis, YAxis } from "react-vis";
 import extractData from "./lib/data";
 
 function App() {
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    setInterval(
+  const getData = () => {
     fetch("https://tgr2020-quiz.firebaseio.com/quiz/sensor/team32.json")
       .then(res => res.json())
       .then(res => {
-        let [xData,yData] = extractData(res)
-        let temp = []
-        xData.map(i=>{
-          console.log({x:xData[i],y:yData[i]})
-          temp.push({x:xData[i],y:yData[i]})
+        extractData(res,function(xData,yData) {
+          let temp = []
+          xData.map((key,i) => {
+            temp.push({ x: xData[i], y: yData[i] })
+          })
+          setData(temp)
         })
-        setData(temp)
       })
-      .catch(() => { console.log("error fetching data") }),5000)
+      .catch((error) => { console.log(error) })
   }
-  );
+
 
   return (
     <div className="App">
-      <XYPlot height={500} width={500}>
+      <h1>PM2.5 sensor data visualization</h1>
+      <button onClick={getData}>fetch data</button>
+      <XYPlot xType="time" height={500} width={1000}>
+        <XAxis title="Time"/>
+        <YAxis title="PM2.5 sensor value"/>
         <LineSeries data={data} />
       </XYPlot>
     </div>
