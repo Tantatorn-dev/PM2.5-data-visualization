@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import './App.css';
-import '../node_modules/react-vis/dist/style.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import "../node_modules/react-vis/dist/style.css";
 import { XYPlot, MarkSeries, XAxis, YAxis } from "react-vis";
 import extractData from "./lib/data";
 import DatePicker from 'react-datepicker';
@@ -17,7 +17,7 @@ function App() {
     fetch("https://tgr2020-quiz2.firebaseio.com/quiz/sensor/team32.json")
       .then(res => res.json())
       .then(res => {
-        extractData(res,startDate,endDate, function (xData, yData) {
+        extractData(res, startDate, endDate, function (xData, yData) {
           let temp = []
           xData.map((key, i) => {
             temp.push({ x: xData[i], y: yData[i] })
@@ -29,10 +29,38 @@ function App() {
       .catch((error) => { console.log(error) })
   }
 
+  useEffect(() => {
+    getData();
+  }, []);
 
+  const headStyles = {
+    margin: 20
+  };
+  const loadingStyles = {
+    width: "3rem",
+    height: "3rem",
+    marginTop: 75
+  };
+  const logoStyles = {
+    height: 40,
+    width: "auto",
+  };
   return (
     <div className="App">
-      <h1>PM2.5 sensor data visualization</h1>
+      <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand">
+          <img style={logoStyles} src="logo.png" />
+          ไม่ต้องห่วงเพื่อนผมแบกเอง
+                </a>
+      </nav>
+      <div className="container">
+        <button
+          onClick={getData}
+          className="btn btn-lg btn-outline-dark"
+          style={headStyles}>
+          PM2.5 sensor data visualization
+                </button>
+      </div>
       <div>
         start
         <DatePicker
@@ -54,13 +82,12 @@ function App() {
           minDate={startDate}
         />
       </div>
-      <button onClick={getData}>fetch data</button>
       {
         !isLoading ?
           (<XYPlot xType="time" height={500} width={1000}>
             <XAxis title="Time" />
             <YAxis title="PM2.5 sensor value" />
-            <MarkSeries data={data} size={1}/>
+            <MarkSeries data={data} size={1} />
           </XYPlot>) : <h1>loading ...</h1>
       }
     </div>
