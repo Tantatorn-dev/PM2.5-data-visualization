@@ -36,13 +36,24 @@ function App() {
     };
 
     const loadingStyles = {
-      width: "3rem",
-      height: "3rem",
-      marginTop: 75
-    }
+        width: "3rem",
+        height: "3rem",
+        marginTop: 75
+    };
+
+    const logoStyles = {
+        height: 40,
+        width: "auto",
+    };
 
     return (
         <div className="App">
+            <nav class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand">
+                    <img style={logoStyles} src="logo.png" />
+                    ไม่ต้องห่วงเพื่อนผมแบกเอง
+                </a>
+            </nav>
             <div className="container">
                 <button
                     onClick={getData}
@@ -57,13 +68,11 @@ function App() {
                         <LineSeries data={data} />
                     </XYPlot>
                 ) : (
-      
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" style={loadingStyles} role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" style={loadingStyles} role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
-
+                    </div>
                 )}
             </div>
         </div>
