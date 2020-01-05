@@ -8,7 +8,7 @@ function App() {
   const [data, setData] = useState([])
 
   const getData = () => {
-    fetch("https://tgr2020-quiz.firebaseio.com/quiz/sensor/team32.json")
+    fetch("https://tgr2020-quiz2.firebaseio.com/quiz/sensor/team32.json")
       .then(res => res.json())
       .then(res => {
         extractData(res,function(xData,yData) {
