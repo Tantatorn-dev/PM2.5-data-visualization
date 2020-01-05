@@ -28,15 +28,26 @@ function App() {
     };
 
     useEffect(() => {
-      getData();
-    }, [])
+        getData();
+    }, []);
+
+    const headStyles = {
+        margin: 20
+    };
+
+    const loadingStyles = {
+      width: 1000,
+      height: 500
+    }
 
     return (
         <div className="App">
             <div className="container">
-                <h1>PM2.5 sensor data visualization</h1>
-                <button onClick={getData} className="btn btn-lg btn-primary">
-                    load data
+                <button
+                    onClick={getData}
+                    className="btn btn-lg btn-outline-dark"
+                    style={headStyles}>
+                    PM2.5 sensor data visualization
                 </button>
                 {!isLoading ? (
                     <XYPlot xType="time" height={500} width={1000}>
@@ -45,7 +56,13 @@ function App() {
                         <LineSeries data={data} />
                     </XYPlot>
                 ) : (
-                    <h1>loading ...</h1>
+                    <div>
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
