@@ -3,10 +3,14 @@ import './App.css';
 import '../node_modules/react-vis/dist/style.css';
 import { XYPlot, LineSeries, XAxis, YAxis } from "react-vis";
 import extractData from "./lib/data";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [data, setData] = useState([])
   const [isLoading, toggleIsLoading] = useState(true)
+  const [startDate, setStartDate] = useState(new Date("2014/02/08"))
+  const [endDate, setEndDate] = useState(new Date("2014/03/08"))
 
   const getData = () => {
     toggleIsLoading(true)
@@ -29,14 +33,35 @@ function App() {
   return (
     <div className="App">
       <h1>PM2.5 sensor data visualization</h1>
+      <div>
+        start
+        <DatePicker
+          selected={startDate}
+          onChange={date => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+        />
+      </div>
+      <div>
+        end
+        <DatePicker
+          selected={endDate}
+          onChange={date => setEndDate(date)}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+        />
+      </div>
       <button onClick={getData}>fetch data</button>
       {
         !isLoading ?
-        (<XYPlot xType="time" height={500} width={1000}>
-          <XAxis title="Time" />
-          <YAxis title="PM2.5 sensor value" />
-          <LineSeries data={data} />
-        </XYPlot>):<h1>loading ...</h1>
+          (<XYPlot xType="time" height={500} width={1000}>
+            <XAxis title="Time" />
+            <YAxis title="PM2.5 sensor value" />
+            <LineSeries data={data} />
+          </XYPlot>) : <h1>loading ...</h1>
       }
     </div>
   );
