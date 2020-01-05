@@ -36,8 +36,9 @@ function App() {
     };
 
     const loadingStyles = {
-      width: 1000,
-      height: 500
+      width: "3rem",
+      height: "3rem",
+      marginTop: 75
     }
 
     return (
@@ -56,13 +57,13 @@ function App() {
                         <LineSeries data={data} />
                     </XYPlot>
                 ) : (
-                    <div>
+      
                         <div class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
+                            <div class="spinner-border" style={loadingStyles} role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </div>
-                    </div>
+
                 )}
             </div>
         </div>
