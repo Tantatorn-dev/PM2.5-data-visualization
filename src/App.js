@@ -55,7 +55,6 @@ function App() {
       </nav>
       <div className="container">
         <button
-          onClick={getData}
           className="btn btn-lg btn-outline-dark"
           style={headStyles}>
           PM2.5 sensor data visualization
@@ -65,7 +64,11 @@ function App() {
         start
         <DatePicker
           selected={startDate}
-          onChange={date => setStartDate(date)}
+          onChange={date => {
+            setStartDate(date)
+            getData()
+          }}
+          onClick={getData}
           selectsStart
           startDate={startDate}
           endDate={endDate}
@@ -75,7 +78,10 @@ function App() {
         end
         <DatePicker
           selected={endDate}
-          onChange={date => setEndDate(date)}
+          onChange={date => {
+            setStartDate(date)
+            getData()
+          }}
           selectsEnd
           startDate={startDate}
           endDate={endDate}
