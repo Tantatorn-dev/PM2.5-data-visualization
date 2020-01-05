@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "../node_modules/react-vis/dist/style.css";
-import { XYPlot, MarkSeries, XAxis, YAxis } from "react-vis";
 import extractData from "./lib/data";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import Graph from "./components/Graph";
+import Appbar from "./components/Appbar";
+import Title from "./components/Title";
 
 function App() {
   const [data, setData] = useState([])
@@ -33,39 +35,24 @@ function App() {
     getData();
   }, []);
 
-  const headStyles = {
-    margin: 20
-  };
   const loadingStyles = {
     width: "3rem",
     height: "3rem",
     marginTop: 75
   };
-  const logoStyles = {
-    height: 40,
-    width: "auto",
-  };
   return (
     <div className="App">
-      <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand">
-          <img style={logoStyles} src="logo.png" />
-          ไม่ต้องห่วงเพื่อนผมแบกเอง
-                </a>
-      </nav>
-      <div className="container">
-        <button
-          onClick={getData}
-          className="btn btn-lg btn-outline-dark"
-          style={headStyles}>
-          PM2.5 sensor data visualization
-                </button>
-      </div>
+      <Appbar />
+      <Title />
       <div>
         start
         <DatePicker
           selected={startDate}
-          onChange={date => setStartDate(date)}
+          onChange={date => {
+            setStartDate(date)
+            getData()
+          }}
+          onClick={getData}
           selectsStart
           startDate={startDate}
           endDate={endDate}
@@ -75,7 +62,10 @@ function App() {
         end
         <DatePicker
           selected={endDate}
-          onChange={date => setEndDate(date)}
+          onChange={date => {
+            setEndDate(date)
+            getData()
+          }}
           selectsEnd
           startDate={startDate}
           endDate={endDate}
@@ -84,11 +74,7 @@ function App() {
       </div>
       {
         !isLoading ?
-          (<XYPlot xType="time" height={500} width={1000}>
-            <XAxis title="Time" />
-            <YAxis title="PM2.5 sensor value" />
-            <MarkSeries data={data} size={1} />
-          </XYPlot>) : <h1>loading ...</h1>
+          <Graph data={data} /> : <h1>loading ...</h1>
       }
     </div>
   );
